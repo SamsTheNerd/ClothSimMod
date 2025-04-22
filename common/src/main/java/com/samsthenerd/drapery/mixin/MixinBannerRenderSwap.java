@@ -26,9 +26,15 @@ public class MixinBannerRenderSwap {
     )
     public void wrapBannerRendererInANiceCozyBlanket(MatrixStack matrices, VertexConsumerProvider vertexConsumers,
          int light, int overlay, ModelPart canvas, SpriteIdentifier baseSprite, boolean isBanner,
-         DyeColor color, BannerPatternsComponent patterns, Operation<Void> original){
+         DyeColor color, BannerPatternsComponent patterns, Operation<Void> original, BannerBlockEntity bannerBE){
 
-        RenderWrappersForMixins.wrapBannerButHotswappable(matrices, vertexConsumers, light, overlay, canvas, baseSprite, isBanner, color, patterns, original);
+        if(bannerBE.getWorld() == null){
+            original.call(matrices, vertexConsumers, light, overlay, canvas, baseSprite, isBanner, color, patterns);
+            return; // item just leave it be?
+        }
+
+        RenderWrappersForMixins.wrapBannerButHotswappable(matrices, vertexConsumers, light, overlay, canvas,
+            baseSprite, isBanner, color, patterns, original, bannerBE);
     }
 
 

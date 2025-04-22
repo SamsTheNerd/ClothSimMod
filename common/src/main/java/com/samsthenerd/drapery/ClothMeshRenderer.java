@@ -19,16 +19,20 @@ public class ClothMeshRenderer {
     public static void renderMesh(ClothMesh cmesh, MatrixStack matStack, VertexConsumerProvider vcp, int light, int overlay){
 
 //        VertexConsumer vc = vcp.getBuffer(RenderLayer.getSolid());
-        VertexConsumer vc = vcp.getBuffer(RenderLayer.getLines());
+//        VertexConsumer vc = vcp.getBuffer(RenderLayer.getLines());
 //        RenderSystem.setShaderTexture(0, );
+
         RenderSystem.disableCull();
         // solid uses POSITION_COLOR_TEXTURE_LIGHT_NORMAL
+        // entity solid uses POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL
         // lines is POS_COLOR_NORMAL
         // debug quads is pos color
-        boolean wireframe = true;
+        boolean wireframe = false;
         for(ClothFaceQuad face : cmesh.getFaces()){
 
             if(wireframe){
+                VertexConsumer vc = vcp.getBuffer(RenderLayer.getLines());
+                RenderSystem.disableCull();
                 for(var edge : face.getEdges()){
                     Vector3f posa = cmesh.getPositionFloat(edge.getLeft().pIndex()).mulPosition(matStack.peek().getPositionMatrix());
                     Vector3f posb = cmesh.getPositionFloat(edge.getRight().pIndex()).mulPosition(matStack.peek().getPositionMatrix());
@@ -40,13 +44,18 @@ public class ClothMeshRenderer {
                         .normal(1,0,0);
                 }
             } else {
+                VertexConsumer vc = vcp.getBuffer(RenderLayer.getEntitySolid(DraperyMod.modLoc("textures/entity/white.png")));
+                RenderSystem.disableCull();
+                Vector3d norm = cmesh.calcFaceNormal(face);
+                norm.mul(-1);
                 for(ClothParticle p : face){
                     Vector3f pos = cmesh.getPositionFloat(p.pIndex()).mulPosition(matStack.peek().getPositionMatrix());
                     vc.vertex(pos)
                         .color(0xFF_FFFFFF)
                         .texture(p.u(), p.v())
+                        .overlay(overlay)
                         .light(light)
-                        .normal(1,0,0);
+                        .normal((float)norm.x, (float)norm.y, (float)norm.z);
                 }
             }
         }

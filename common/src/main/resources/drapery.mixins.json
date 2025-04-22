@@ -4,9 +4,8 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
-    "MixinBannerRenderSwap"
-  ],
-  "mixins": [
+    "MixinBannerRenderSwap",
+    "MixinBannerAttachCloth"
   ],
   "injectors": {
     "defaultRequire": 1
