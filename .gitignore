@@ -42,4 +42,7 @@ build
 write-ups/*.log
 write-ups/*.out
 write-ups/*.gz
-
+*.blg
+*.bbl
+write-ups/README.txt
+write-ups/report_outline.md

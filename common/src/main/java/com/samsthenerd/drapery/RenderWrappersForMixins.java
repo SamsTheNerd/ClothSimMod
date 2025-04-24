@@ -20,7 +20,7 @@ public class RenderWrappersForMixins {
         ClothMesh mesh = ((ClothHaverDuck)bannerBE).getMesh();
 
         int w = 5;
-        int h = 10;
+        int h = 9;
 
         if(mesh == null){
             mesh = new ClothMesh(w, h, (idx) -> {
@@ -29,7 +29,8 @@ public class RenderWrappersForMixins {
                 return new ClothParticle(i + w * j,
                     new Vector3d(20.0/16*(((float)i)/(w-1)-0.5),40.0/16*(1-((float)j)/(h-1))-0.5, -1.1/16),
                     j==0 && (i ==0 || i == w-1), ((float)i)/w, ((float)j)/w);
-            }, ClothMesh.makeSpringGenerator(50, 20, 0, w));
+                // oh these UVs aren't right at all huh TODO: fix that.
+            }, ClothMesh.makeSpringGenerator(50, 10, 2, w));
             ((ClothHaverDuck)bannerBE).setMesh(mesh);
         }
         if(((ClothHaverDuck)bannerBE).isSimTicking()){
@@ -38,7 +39,7 @@ public class RenderWrappersForMixins {
 
         matrices.push();
         matrices.scale(1,-1,1);
-        ClothMeshRenderer.renderMesh(mesh, matrices, vertexConsumers, light, overlay);
+        ClothMeshRenderer.adHocBannerRenderer(mesh, matrices, vertexConsumers, light, overlay, baseSprite, color, patterns, bannerBE);
         matrices.pop();
         // nop?
     }

@@ -29,7 +29,7 @@ public class ClothMesh {
 
     private final DoubleMatrix wMat;
 
-    public static final double DTIME = 1.0/240; // ig? idk
+    public static final double DTIME = 1.0/60; // ig? idk
     public static final double STRETCH_LIMIT = 1.05; // only 10% allowance
     public static final double PARTICLE_MASS = 1;
 
